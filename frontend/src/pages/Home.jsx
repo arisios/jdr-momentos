@@ -6,6 +6,7 @@ import { useAuth } from '../hooks/useAuth';
 import Bandeirinhas from '../components/Bandeirinhas';
 import StatusBadge from '../components/StatusBadge';
 import LoadingSpinner from '../components/LoadingSpinner';
+import WalletBadge from '../components/WalletBadge';
 
 const STATUS_STYLE = {
   locked: { label: '🔒 Em breve',     bg: 'rgba(58,31,20,0.08)',       color: '#3A1F14' },
@@ -113,6 +114,7 @@ export default function Home() {
             <p className="text-xs" style={{ color: '#C79A3B' }}>@{user?.instagram}</p>
           </div>
           <div className="flex items-center gap-2">
+            <WalletBadge />
             <StatusBadge level={user?.statusLevel || 0} />
             <button onClick={logout} className="text-xs font-medium px-2 py-1 rounded-lg transition-colors"
               style={{ color: '#6F2DA8' }}>Sair</button>
