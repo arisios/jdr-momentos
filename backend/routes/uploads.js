@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const { getDb, getUserStatus, STATUS_LABELS } = require('../database/db');
 const { authMiddleware } = require('../middleware/auth');
+const { emitirMoedas } = require('../../../../shared/wallet-emit');
 
 const router = express.Router();
 
@@ -67,6 +68,10 @@ router.post('/', authMiddleware, upload.single('file'), (req, res) => {
   const missionTotal = db.prepare('SELECT COUNT(*) as c FROM missions').get().c;
   const missionCount = db.prepare('SELECT COUNT(*) as c FROM uploads WHERE user_id=? AND album_id=?').get(userId, parseInt(album_id)).c;
   const justCompleted = missionCount === missionTotal;
+
+  // Emitir moedas por missão completada
+  emitirMoedas(userId, 'missao');
+  if (justCompleted) emitirMoedas(userId, 'album_completo');
 
   const statusLevel = getUserStatus(userId);
 
